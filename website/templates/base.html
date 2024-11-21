@@ -8,11 +8,19 @@
   </head>
   <body>
     <nav style="display: flex; justify-content: space-around" role="navigation">
-      <a href="/login" id="login" style="border-radius: 10px; outline: none">Login</a>
-      <a href="/signup" id="signup" style="border-radius: 10px; outline: none">create ONE</a>
-      <a href="/logout" id="logout" style="border-radius: 10px; outline: none">Logout</a>
-      <a href="/" id="home" style="border-radius: 10px; outline: none">Home</a>
+      <p>Debug: User Role = {{ user.role }}</p>
+      {% if user.is_authenticated %}
+        {% if user.role == 2 %}
+          <a href="/create" id="signup" style="border-radius: 10px; outline: none">Create User</a>
+        {% endif %}
+        <a href="/logout" id="logout" style="border-radius: 10px; outline: none">Logout</a>
+        <a href="/" id="home" style="border-radius: 10px; outline: none">Home</a>
+      {% else %}
+        <h1>Enter your login and passwords here</h1>
+      {% endif %}
     </nav>
+    
+    
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       <div id="flash-messages">
