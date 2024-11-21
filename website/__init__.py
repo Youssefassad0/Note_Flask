@@ -13,14 +13,14 @@ def create_app():
     # Set the app's secret key and database URI
     app.config['SECRET_KEY'] = os.urandom(24)  # You can also use a fixed key, but urandom is fine for development
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:ecmaroc@192.168.2.210/RENTWAY?driver=SQL Server Native Client 10.0'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable track modifications to save resources
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
 
     # Initialize the app with SQLAlchemy
     db.init_app(app)
 
     # Initialize Flask-Login
     login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'  # Specify the login route for Flask-Login
+    login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
     # Import Blueprints
@@ -39,6 +39,6 @@ def create_app():
     # Set up user_loader function for Flask-Login
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))  # Retrieve the user object by its ID
+        return User.query.get(int(id)) 
 
     return app

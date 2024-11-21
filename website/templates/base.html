@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}App{% endblock %}</title>
-    {% block style %}{% endblock %}
+    {% block style %}
+    <link rel=stylesheet type=text/css
+    href="{{ url_for('static', filename='login.css') }}">
+    {% endblock %}
   </head>
   <body>
     <nav style="display: flex; justify-content: space-around" role="navigation">
