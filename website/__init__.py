@@ -9,7 +9,7 @@ db=SQLAlchemy()
 def create_app():
     app=Flask(__name__)
     app.config['SECRET_KEY']=os.urandom(24)  
-    app.config['SQLALCHEMY_DATABASE_URI']='mssql+pyodbc://ECM:.\Ec@Extr@net@192.168.2.230/NOTEBOOK?driver=SQL Server Native Client 10.0'
+    app.config['SQLALCHEMY_DATABASE_URI']='mssql+pyodbc://sa:ecmaroc@192.168.2.210/RENTWAY?driver=SQL Server Native Client 10.0'
     db.init_app(app) 
     
     from .views import views
@@ -22,3 +22,4 @@ def create_app():
     
 
     return app
+
