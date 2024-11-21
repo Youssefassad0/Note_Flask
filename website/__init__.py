@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_login import LoginManager
-from users import users
+# from users import users
 
 # Initialize SQLAlchemy
 db = SQLAlchemy()
@@ -26,6 +26,7 @@ def create_app():
     # Import Blueprints
     from .views import views
     from .auth import auth
+    from .users import users
 
     # Register Blueprints
     app.register_blueprint(views, url_prefix='/')

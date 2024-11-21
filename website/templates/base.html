@@ -9,36 +9,38 @@
   <body>
     <nav style="display: flex; justify-content: space-around" role="navigation">
       <p>Debug: User Role = {{ user.role }}</p>
-      {% if user.is_authenticated %}
-        {% if user.role == 2 %}
-          <a href="/create" id="signup" style="border-radius: 10px; outline: none">Create User</a>
-        {% endif %}
-        <a href="/logout" id="logout" style="border-radius: 10px; outline: none">Logout</a>
-        <a href="/" id="home" style="border-radius: 10px; outline: none">Home</a>
+      {% if user.is_authenticated %} {% if user.role == 2 %}
+      <a
+        href="/users/create_user"
+        id="signup"
+        style="border-radius: 10px; outline: none"
+        >Create User</a
+      >
+      {% endif %}
+      <a href="/logout" id="logout" style="border-radius: 10px; outline: none"
+        >Logout</a
+      >
+      <a href="/" id="home" style="border-radius: 10px; outline: none">Home</a>
       {% else %}
-        <h1>Enter your login and passwords here</h1>
+      <h1>Enter your login and passwords here</h1>
       {% endif %}
     </nav>
-    
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-      <div id="flash-messages">
-        {% for category, message in messages %}
-          {% if category == 'error' %}
-            <div class="alert">{{ message }}</div>
-          {% elif category == 'info' %}
-          <div class="alert_info">{{ message }}</div>
-            
-              {% else %}
-              <div class="alert_success">{{ message }}</div>
-            
-          {% endif %}
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endwith %}
-    {% block body %}{% endblock %}
+    <p>Welcome, {{ user.name }}!</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div id="flash-messages">
+      {% for category, message in messages %} {% if category == 'error' %}
+      <div class="alert">{{ message }}</div>
+      {% elif category == 'info' %}
+      <div class="alert_info">{{ message }}</div>
+
+      {% else %}
+      <div class="alert_success">{{ message }}</div>
+
+      {% endif %} {% endfor %}
+    </div>
+    {% endif %} {% endwith %} {% block body %}{% endblock %}
     <script>
       // Wait for the DOM to load
       document.addEventListener("DOMContentLoaded", function () {
