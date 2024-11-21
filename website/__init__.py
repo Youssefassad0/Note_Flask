@@ -1,8 +1,16 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+
+
+db=SQLAlchemy()
 
 def create_app():
     app=Flask(__name__)
-    app.config['SECRET_KEY']='ASSAD_YOUSSEF_2004'
+    app.config['SECRET_KEY']=os.urandom(24)  
+    app.config['SQLALCHEMY_DATABASE_URI']='mssql+pyodbc://sa:ecmaroc@192.168.2.210/RENTWAY?driver=SQL Server Native Client 10.0'
+    db.init_app(app) 
     from .views import views
     from .auth import auth
     app.register_blueprint(views,url_prefix='/')
