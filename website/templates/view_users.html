@@ -17,8 +17,15 @@ title %} Users Page {%endblock %} {% block body %}
   {% for user in users %}
   <tr><th>{{ user.name }}</th>
     <td>{{ user.email }}</td>
-    <td>{{ user.role }}</td>
-    <td>    <a href="{{ url_for('users.delete_user', user_id=user.id) }}">Delete</a>
+    <td> {% if  user.role  == 1 %}
+      Utilisateur
+      {%elif user.role ==2%}
+      Administrator
+      {%endif%}
+    </td>
+    <td>   
+       <a href="{{ url_for('users.delete_user', user_id=user.id) }}">Delete</a>
+       <a href="{{ url_for('users.delete_user', user_id=user.id) }}">Modifier </a>
     </td>
  
   {% endfor %}
