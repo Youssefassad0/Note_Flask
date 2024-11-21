@@ -16,8 +16,8 @@ def login():
         if user:
             if check_password_hash(user.password, password):
                 flash("Login successful!", category="success")
-                login_user(user)
-                # Redirect to the home page or dashboard
+                login_user(user,remember=True)
+                # Redirect to the home page 
                 return redirect(url_for("views.home"))
             else:
                 flash("Incorrect password. Please try again.", category="error")
@@ -55,13 +55,17 @@ def signup():
             )
             db.session.add(new_user)
             db.session.commit()
+            login_user(new_user,remember=True)
+            
             flash("User created successfully!", category="success")
             return redirect(url_for("views.home"))
 
     return render_template("signup.html")
 
 @auth.route("/logout")
+@login_required
 def logout():
-    # Clear user session or implement Flask-Login's logout_user()
+
+    logout_user()
     flash("You have been logged out.", category="info")
     return redirect(url_for("auth.login"))
