@@ -11,10 +11,10 @@ users = Blueprint('users', __name__)
 def create_user():
     print(f"Current user: {current_user} (Role: {getattr(current_user, 'role', None)})")
 
-    # Skip role check for now and allow access to test
-    # if current_user.role != 2:  # Use integer comparison if role is an integer in DB
-    #     flash("Access denied: You do not have permission to create users.", category="error")
-    #     return redirect(url_for("views.home"))
+
+    if current_user.role != 2:  # Use integer comparison if role is an integer in DB
+        flash("Access denied: You do not have permission to create users.", category="error")
+        return redirect(url_for("views.home"))
 
     if request.method == "POST":
         email = request.form.get("login")
@@ -50,16 +50,15 @@ def create_user():
     return render_template("signup.html", user=current_user)  # Pass current_user to template
 
 
-@users.route('/view', methods=["GET"])
+@users.route('/view_users', methods=["GET", "POST"])
 @login_required
 def view_users():
-   
-    if current_user.role != "2":
-        flash("Access denied: You do not have permission to view users.", category="error")
+    if current_user.role==2:
+        users_list = User.query.all()  # Get all users
+        return render_template("view_users.html", user=current_user, users=users_list)  # Pass both current_user and users
+    else:
+        flash("Access denied: You do not have permission to delete users.", category="error")
         return redirect(url_for("views.home"))
-
-    users_list = User.query.all()  # Retrieve all users from the database
-    return render_template("view_users.html",user=current_user, users=users_list)
 
 
 @users.route('/delete/<int:user_id>', methods=["GET"])
