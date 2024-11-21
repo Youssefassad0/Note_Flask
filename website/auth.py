@@ -9,6 +9,6 @@ def login():
 def signup():
     return render_template("signup.html")
 
-@auth.route('/logout')
+@auth.route('/Logout')
 def logout():
     return 'logout'
