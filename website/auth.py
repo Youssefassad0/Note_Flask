@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash
-
+from .models import User
+from werkzeug.security import generate_password_hash,check_password_hash
 auth = Blueprint("auth", __name__)
 
 
@@ -27,6 +28,7 @@ def signup():
         elif role == "":
             flash("Role Must be Selected .", category="error")
         else:
+            new_user=User(email=email,name=name,password=generate_password_hash(password),methode='sha256')
             flash("You created the user correctly !", category="success")
     return render_template("signup.html")
 
