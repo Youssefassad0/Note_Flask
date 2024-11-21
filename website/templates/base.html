@@ -3,24 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{%block title %} APP {%endblock %}</title>
-    {%block style %}  {%endblock %}
+    <title>{% block title %}App{% endblock %}</title>
+    {% block style %}{% endblock %}
   </head>
   <body>
-    <nav style="display: flex; justify-content: space-around">
-      <a  href="/login" id="login" style="border-radius: 10px; outline: none">
-        Login
-      </a>
-      <a  href="/signup" id="signup" style="border-radius: 10px; outline: none">
-        Sign-Up
-      </a>
-      <a  href="/Logout" id="Logout" style="border-radius: 10px; outline: none">
-        Logout
-      </a>
-      <a  href="/" id="home" style="border-radius: 10px; outline: none">
-        Home
-      </a>
+    <nav style="display: flex; justify-content: space-around" role="navigation">
+      <a href="/login" id="login" style="border-radius: 10px; outline: none">Login</a>
+      <a href="/signup" id="signup" style="border-radius: 10px; outline: none">Sign-Up</a>
+      <a href="/logout" id="logout" style="border-radius: 10px; outline: none">Logout</a>
+      <a href="/" id="home" style="border-radius: 10px; outline: none">Home</a>
     </nav>
-    {% block body %} {% endblock %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          {% if category == 'error' %}
+            <div class="alert">{{ message }}</div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block body %}{% endblock %}
   </body>
 </html>
