@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{%block title %} APP {%endblock %}</title>
+  </head>
+  <body>
+    <nav style="display: flex; justify-content: space-around">
+      <a  href="/login" id="login" style="border-radius: 10px; outline: none">
+        Login
+      </a>
+      <a  href="/signup" id="signup" style="border-radius: 10px; outline: none">
+        Sign-Up
+      </a>
+      <a  href="/Logout" id="Logout" style="border-radius: 10px; outline: none">
+        Logout
+      </a>
+      <a  href="/" id="home" style="border-radius: 10px; outline: none">
+        Home
+      </a>
+    </nav>
+    {% block body %} {% endblock %}
+  </body>
+</html>
