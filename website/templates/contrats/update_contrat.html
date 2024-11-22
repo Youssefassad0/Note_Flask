@@ -12,7 +12,10 @@
 </style>
 {% endblock %} {% block title %} Modifier Contrat {% endblock %} {% block body
 %}
-<form method="POST" class="form">
+<form method="POST" 
+action="{{ url_for('contrats.update_contrat', nm_contrat=contrat.Number) }}"
+
+class="form">
   <h1>
     Modifier le Contrat
     <span id="nm_contrat"> {{ contrat.Number or 'N/A' }} </span>
