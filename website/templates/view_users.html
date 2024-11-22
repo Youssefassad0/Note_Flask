@@ -8,14 +8,20 @@ title %} Users Page {%endblock %} {% block body %}
 <div class="table-horizontal-container">
   <table class="unfixed-table">
     <thead>
-      <tr><th>Nom Complet</th><th>Login</th><th>Role</th>
+      <tr>
+        <th>ID</th>
+        <th>Nom Complet</th>
+        <th>Login</th><th>Role</th>
     </thead>
 
 {% if users %}
 
 
   {% for user in users %}
-  <tr><th>{{ user.name }}</th>
+  <tr>
+    <th>{{ user.id }}</th>
+    <th>{{ user.name }}</th>
+
     <td>{{ user.email }}</td>
     <td> {% if  user.role  == 1 %}
       Utilisateur
@@ -25,7 +31,7 @@ title %} Users Page {%endblock %} {% block body %}
     </td>
     <td>   
        <a href="{{ url_for('users.delete_user', user_id=user.id) }}">Delete</a>
-       <a href="{{ url_for('users.delete_user', user_id=user.id) }}">Modifier </a>
+       <a href="{{ url_for('users.update_user', user_id=user.id) }}">Modifier </a>
     </td>
  
   {% endfor %}

@@ -14,36 +14,7 @@ a {
   
 
   
-  /* Alert Styles */
-  .alert {
-	background-color: #f44336;
-	color: white;
-	padding: 10px;
-	margin: 20px 0;
-	border-radius: 5px;
-	font-weight: bold;
-	text-align: center;
-  }
-.alert_success{
-	background-color: #388e3c;
-	color: white;
-	padding: 10px;
-	margin: 20px 0;
-	border-radius: 5px;
-	font-weight: bold;
-	text-align: center;
-  }
-  .alert_info{
-	
-		background-color: #97b413;
-		color: white;
-		padding: 10px;
-		margin: 20px 0;
-		border-radius: 5px;
-		font-weight: bold;
-		text-align: center;
-	  
-  }
+
 .container {
 	display: flex;
 	align-items: center;

@@ -45,7 +45,7 @@ def create_user():
             db.session.commit()
 
             flash("User created successfully!", category="success")
-            return redirect(url_for("views.home"))
+            return redirect(url_for("users.create_user"))
 
     return render_template("signup.html", user=current_user)  # Pass current_user to template
 
@@ -64,22 +64,27 @@ def view_users():
 @users.route('/delete/<int:user_id>', methods=["GET"])
 @login_required
 def delete_user(user_id):
-    # Only allow access if the user has role "2"
-    if current_user.role != "2":
-        flash("Access denied: You do not have permission to delete users.", category="error")
-        return redirect(url_for("views.home"))
 
-    # Fetch the user to delete
     user_to_delete = User.query.get_or_404(user_id)
-
-    # Ensure you can't delete yourself
     if user_to_delete == current_user:
         flash("You cannot delete your own account.", category="error")
         return redirect(url_for("users.view_users"))
-
     # Delete the user
     db.session.delete(user_to_delete)
     db.session.commit()
+    flash("User deleted successfully!", category="success")
+    return redirect(url_for("users.view_users"))
 
+@users.route('/update_user/<int:user_id>', methods=["GET"])
+@login_required
+def update_user(user_id):
+
+    user_to_delete = User.query.get_or_404(user_id)
+    if user_to_delete == current_user:
+        flash("You cannot delete your own account.", category="error")
+        return redirect(url_for("users.view_users"))
+    # Delete the user
+    db.session.delete(user_to_delete)
+    db.session.commit()
     flash("User deleted successfully!", category="success")
     return redirect(url_for("users.view_users"))
