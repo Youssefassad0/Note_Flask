@@ -11,3 +11,16 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(50), nullable=False)
 
+class RA(UserMixin, db.Model):
+    __tablename__ = "RA"
+    Number = db.Column(db.String(20), primary_key=True)
+    Close_Date = db.Column(db.DateTime)
+    Close_User = db.Column(db.String(50))
+    Date_Out = db.Column(db.DateTime)
+    Date_In = db.Column(db.DateTime)
+    Return_Date = db.Column(db.DateTime)
+    Station_Out = db.Column(db.String(50))
+    Station_In = db.Column(db.String(50))
+    Return_Station = db.Column(db.String(50))
+    Return_Place = db.Column(db.String(50))
+    Return_Date = db.Column(db.Date)
