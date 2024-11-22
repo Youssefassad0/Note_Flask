@@ -1,44 +1,94 @@
-{%extends "base.html"%} {% block style %} <link rel=stylesheet type=text/css
-href="{{ url_for('static', filename='contrats.css') }}"> {%endblock %} {% block
-title %} Modifier Contrat {%endblock %} {% block body %}
-<form
-  method="POST"
- 
-  class="form"
->
+{% extends "base.html" %} {% block style %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='contrats.css') }}"
+/>
+<style>
+  #nm_contrat {
+    font-size: 1rem;
+    color: {% if contrat.Close_Date %} red {% else %} green {% endif %};
+  }
+</style>
+{% endblock %} {% block title %} Modifier Contrat {% endblock %} {% block body
+%}
+<form method="POST" class="form">
   <h1>
-    Modifier le Contrat <span id="nm_contrat"> {{nm}} </span>
+    Modifier le Contrat
+    <span id="nm_contrat"> {{ contrat.Number or 'N/A' }} </span>
   </h1>
 
   <label for="Close_User">Utilisateur de Clôture:</label>
-  <input type="text" id="Close_User" value={{contrat.Close_User}}  name="Close_User" value={{contrat.Close_User}}  />
+  <input
+    type="text"
+    id="Close_User"
+    value="{{ contrat.Close_User or '' }}"
+    name="Close_User"
+  />
 
   <label for="Close_Date">Date de Clôture:</label>
-  <input type="datetime-local" id="Close_Date" value={{contrat.Close_Date.strftime('%Y-%m-%dT%H:%M')}}  name="Close_Date" />
+  <input
+    type="datetime-local"
+    id="Close_Date"
+    value="{{ contrat.Close_Date.strftime('%Y-%m-%dT%H:%M') if contrat.Close_Date else '' }}"
+    name="Close_Date"
+  />
 
   <label for="Date_Out">Date de Sortie:</label>
-  <input type="datetime-local" id="Date_Out" value={{contrat.Date_Out.strftime('%Y-%m-%dT%H:%M')}}  name="Date_Out" />
+  <input
+    type="datetime-local"
+    id="Date_Out"
+    value="{{ contrat.Date_Out.strftime('%Y-%m-%dT%H:%M') if contrat.Date_Out else '' }}"
+    name="Date_Out"
+  />
 
   <label for="Date_In">Date d'Entrée:</label>
-  <input type="datetime-local" id="Date_In" value={{contrat.Date_In.strftime('%Y-%m-%dT%H:%M')}}  name="Date_In" />
+  <input
+    type="datetime-local"
+    id="Date_In"
+    value="{{ contrat.Date_In.strftime('%Y-%m-%dT%H:%M') if contrat.Date_In else '' }}"
+    name="Date_In"
+  />
 
   <label for="Return_Date">Date de Retour:</label>
-  <input type="datetime-local" id="Return_Date" value={{contrat.Return_Date.strftime('%Y-%m-%dT%H:%M')}}  name="Return_Date" />
+  <input
+    type="datetime-local"
+    id="Return_Date"
+    value="{{ contrat.Return_Date.strftime('%Y-%m-%dT%H:%M') if contrat.Return_Date else '' }}"
+    name="Return_Date"
+  />
 
   <label>Station de Sortie :</label>
-  <input type="text" value={{contrat.Station_Out}}  name="Station_Out" />
+  <input
+    type="text"
+    value="{{ contrat.Station_Out or '' }}"
+    name="Station_Out"
+  />
 
   <label>Station d'Entrée :</label>
-  <input type="text" value={{contrat.Station_In}}  name="Station_In" />
+  <input type="text" value="{{ contrat.Station_In or '' }}" name="Station_In" />
 
   <label>Station de Retour :</label>
-  <input type="text" value={{contrat.Return_Station}}  name="Return_Station" />
+  <input
+    type="text"
+    value="{{ contrat.Return_Station or '' }}"
+    name="Return_Station"
+  />
 
- 
+  <label> KM D'Entrée :</label>
+  <input type="text" value="{{ contrat_vehicule.Kms_In or '' }}" name="Station_In" />
+
+  <label>KM de Sortie :</label>
+  <input
+    type="text"
+    value="{{ contrat_vehicule.Kms_Out or '' }}"
+    name="Return_Station"
+  />
+
   <button type="submit">Confirmer</button>
   <button
     type="button"
-   
+    onclick="window.location.href='{{ url_for('contrats.search_page') }}'"
   >
     Annuler
   </button>

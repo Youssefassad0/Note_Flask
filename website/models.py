@@ -34,4 +34,6 @@ class RA_Vehicles(UserMixin,db.Model):
     Data_Out = db.Column(db.DateTime)
     Station_In = db.Column(db.String(50))
     Data_In = db.Column(db.DateTime)
+    Kms_Out=db.Column(db.String(50))
+    Kms_In=db.Column(db.String(50))
 

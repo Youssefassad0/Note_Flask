@@ -15,11 +15,15 @@ def search_page():
 
         if numero_contrat:
             contrat = RA.query.filter_by(Number=numero_contrat).first()
-            return render_template("contrats/update_contrat.html",contrat=contrat, user=current_user)
-        else :
-             flash("Veuillez entrer un numéro de contrat valide.", "error")
-             return redirect(url_for("contrats.search_page"))
-
-       
+            contrat_vehicule = RA_Vehicles.query.filter_by(RA=numero_contrat).first()
+            return render_template(
+                "contrats/update_contrat.html",
+                contrat=contrat,
+                contrat_vehicule=contrat_vehicule,
+                user=current_user,
+            )
+        else:
+            flash("Veuillez entrer un numéro de contrat valide.", "error")
+            return redirect(url_for("contrats.search_page"))
 
     return render_template("contrats/search.html", user=current_user)

@@ -16,7 +16,6 @@
       <nav>
         <div class="logo">
           <a href="/">RENTWAY APP²</a>
-          
         </div>
         <input type="checkbox" id="toggle" class="toggle-checkbox" />
         <label for="toggle" class="toggle-label">
@@ -49,10 +48,8 @@
       </nav>
     </header>
 
-    {% if user and user.is_authenticated %}
-    <p>Welcome, {{ user.name }}!</p>
-    {% endif %} {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
+    {% if user and user.is_authenticated %} {% endif %} {% with messages =
+    get_flashed_messages(with_categories=true) %} {% if messages %}
     <div id="flash-messages">
       {% for category, message in messages %}
       <div class="{{ 'alert_' + category }}">{{ message }}</div>
