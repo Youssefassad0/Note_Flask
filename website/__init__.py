@@ -36,7 +36,7 @@ def create_app():
     app.register_blueprint(contrats, url_prefix='/contrats')
 
     # Import models for user management
-    from .models import User
+    from .models import User,RA,RA_Vehicles
 
     # Set up user_loader function for Flask-Login
     @login_manager.user_loader

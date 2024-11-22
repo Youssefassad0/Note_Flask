@@ -24,3 +24,14 @@ class RA(UserMixin, db.Model):
     Return_Station = db.Column(db.String(50))
     Return_Place = db.Column(db.String(50))
     Return_Date = db.Column(db.Date)
+
+class RA_Vehicles(UserMixin,db.Model):
+    __tablename__ = "RA_Vehicles"
+    RA = db.Column(db.String(20), primary_key=True)  
+    Unit_Number = db.Column(db.String(50))
+    Plate_Number = db.Column(db.String(50))
+    Station_out = db.Column(db.String(50))
+    Data_Out = db.Column(db.DateTime)
+    Station_In = db.Column(db.String(50))
+    Data_In = db.Column(db.DateTime)
+
