@@ -1,0 +1,48 @@
+/* Conteneur principal */
+.search_div {
+    max-width: 600px;
+    margin: 90px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre */
+.title_search {
+    text-align: center;
+    color: #333;
+}
+
+/* Formulaire */
+.form_search {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Étiquette */
+.label_search {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Champ de texte */
+#input_search {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* Bouton */
+#btn_search {
+    padding: 10px;
+    background-color: #5cb85c; /* Couleur verte */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#btn_search:hover {
+    background-color: #4cae4c; /* Couleur verte foncée au survol */
+}
