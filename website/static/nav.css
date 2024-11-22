@@ -1,0 +1,174 @@
+
+/* Reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+  }
+  
+  /* Body */
+  body {
+	font-family: Arial, sans-serif;
+  }
+  
+  /* Navbar */
+  nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #00e632f8;
+	padding: 10px 20px;
+	position: relative;
+  }
+  
+  .logo a {
+	color: white;
+	text-decoration: none;
+	font-size: 24px;
+	font-weight: bold;
+  }
+  
+  .nav-links {
+	display: flex;
+	list-style: none;
+  }
+  
+  .nav-links li {
+	position: relative;
+	margin-left: 20px;
+  }
+  
+  .nav-links a {
+	color: white;
+	text-decoration: none;
+	font-size: 18px;
+	padding: 8px 15px;
+	display: block;
+	transition: background-color 0.3s;
+  }
+  
+  .nav-links a:hover {
+	background-color: #575757;
+	border-radius: 5px;
+  }
+  
+  /* Dropdown Menu */
+  .dropdown-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background-color: #699c09;
+	list-style: none;
+	border-radius: 5px;
+	padding: 0;
+	z-index: 1000;
+  }
+  
+  .dropdown-menu li {
+	margin: 0;
+  }
+  
+  .dropdown-menu a {
+	padding: 10px 15px;
+	font-size: 16px;
+	white-space: nowrap;
+  }
+  
+  .dropdown-menu a:hover {
+	background-color: #575757;
+  }
+  
+  /* Show dropdown on hover */
+  .dropdown:hover .dropdown-menu {
+	display: block;
+  }
+  
+  /* Hamburger Menu */
+  .toggle-checkbox {
+	display: none;
+  }
+  
+  .toggle-label {
+	display: none;
+	cursor: pointer;
+  }
+  
+  .hamburger {
+	width: 30px;
+	height: 3px;
+	background-color: white;
+	position: relative;
+	transition: 0.3s;
+  }
+  
+  .hamburger::before,
+  .hamburger::after {
+	content: "";
+	width: 30px;
+	height: 3px;
+	background-color: white;
+	position: absolute;
+	left: 0;
+	transition: 0.3s;
+  }
+  
+  .hamburger::before {
+	top: -8px;
+  }
+  
+  .hamburger::after {
+	top: 8px;
+  }
+  
+  /* Responsive Navbar */
+  @media (max-width: 768px) {
+	.nav-links {
+	  display: none;
+	  flex-direction: column;
+	  width: 100%;
+	  position: absolute;
+	  top: 60px;
+	  left: 0;
+	  background-color: #333;
+	}
+  
+	.nav-links li {
+	  margin: 10px 0;
+	  text-align: center;
+	}
+  
+	.toggle-checkbox:checked + .toggle-label .hamburger {
+	  background-color: transparent;
+	}
+  
+	.toggle-checkbox:checked + .toggle-label .hamburger::before {
+	  top: 0;
+	  transform: rotate(45deg);
+	}
+  
+	.toggle-checkbox:checked + .toggle-label .hamburger::after {
+	  top: 0;
+	  transform: rotate(-45deg);
+	}
+  
+	.toggle-checkbox:checked ~ .nav-links {
+	  display: flex;
+	}
+  
+	.toggle-label {
+	  display: block;
+	}
+  
+	/* Dropdown inside mobile view */
+	.dropdown-menu {
+	  position: static;
+	  background-color: #333;
+	  border-radius: 0;
+	}
+  
+	.dropdown:hover .dropdown-menu {
+	  display: block;
+	}
+  }
+  
