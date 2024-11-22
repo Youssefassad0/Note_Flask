@@ -11,32 +11,30 @@ title %} Modifier Contrat {%endblock %} {% block body %}
   </h1>
 
   <label for="Close_User">Utilisateur de Clôture:</label>
-  <input type="text" id="Close_User" name="Close_User" />
+  <input type="text" id="Close_User" value={{contrat.Close_User}}  name="Close_User" value={{contrat.Close_User}}  />
 
   <label for="Close_Date">Date de Clôture:</label>
-  <input type="datetime-local" id="Close_Date" name="Close_Date" />
+  <input type="datetime-local" id="Close_Date" value={{contrat.Close_Date.strftime('%Y-%m-%dT%H:%M')}}  name="Close_Date" />
 
   <label for="Date_Out">Date de Sortie:</label>
-  <input type="datetime-local" id="Date_Out" name="Date_Out" />
+  <input type="datetime-local" id="Date_Out" value={{contrat.Date_Out.strftime('%Y-%m-%dT%H:%M')}}  name="Date_Out" />
 
   <label for="Date_In">Date d'Entrée:</label>
-  <input type="datetime-local" id="Date_In" name="Date_In" />
+  <input type="datetime-local" id="Date_In" value={{contrat.Date_In.strftime('%Y-%m-%dT%H:%M')}}  name="Date_In" />
 
   <label for="Return_Date">Date de Retour:</label>
-  <input type="datetime-local" id="Return_Date" name="Return_Date" />
+  <input type="datetime-local" id="Return_Date" value={{contrat.Return_Date.strftime('%Y-%m-%dT%H:%M')}}  name="Return_Date" />
 
   <label>Station de Sortie :</label>
-  <input type="text" name="Station_Out" />
+  <input type="text" value={{contrat.Station_Out}}  name="Station_Out" />
 
   <label>Station d'Entrée :</label>
-  <input type="text" name="Station_In" />
+  <input type="text" value={{contrat.Station_In}}  name="Station_In" />
 
   <label>Station de Retour :</label>
-  <input type="text" name="Return_Station" />
+  <input type="text" value={{contrat.Return_Station}}  name="Return_Station" />
 
-  <label>Lieu de Retour :</label>
-  <input type="text" name="Return_Place" />
-
+ 
   <button type="submit">Confirmer</button>
   <button
     type="button"
