@@ -23,15 +23,15 @@ title %} Users Page {%endblock %} {% block body %}
     <th>{{ user.name }}</th>
 
     <td>{{ user.email }}</td>
-    <td> {% if  user.role  == 1 %}
+    <td> {% if  user.role  == '1' %}
       Utilisateur
-      {%elif user.role ==2%}
+      {%elif user.role =='2'%}
       Administrator
       {%endif%}
     </td>
     <td>   
-       <a href="{{ url_for('users.delete_user', user_id=user.id) }}">Delete</a>
-       <a href="{{ url_for('users.update_user', user_id=user.id) }}">Modifier </a>
+      <a href="{{ url_for('users.update_user', user_id=user.id) }}"  >Modifier </a>
+      <a href="{{ url_for('users.delete_user', user_id=user.id) }}">Delete</a>
     </td>
  
   {% endfor %}

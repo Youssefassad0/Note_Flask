@@ -4,81 +4,62 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}App{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='nav.css') }}">
-    {% block style %}
-    {% endblock %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='nav.css') }}"
+    />
+    {% block style %}{% endblock %}
   </head>
   <body>
     <header>
       <nav>
         <div class="logo">
           <a href="/">RENTWAY APP²</a>
+          {{ user.email if user and user.is_authenticated else "" }}
         </div>
         <input type="checkbox" id="toggle" class="toggle-checkbox" />
         <label for="toggle" class="toggle-label">
           <span class="hamburger"></span>
         </label>
         <ul class="nav-links">
-          {% if user.is_authenticated %}
-            <li><a href="/">Home</a></li>
-            <li class="dropdown">
-              <a href="#">Contrat</a>
-              <ul class="dropdown-menu">
-                <li><a href="/web-design">Modifier champ</a></li>
-                <li><a href="/seo">Ouvrir Contrat fermé</a></li>
-              </ul>
-            </li>
-            {% if user.role == 2 %}
-            <li class="dropdown">
-              <a href="#">Parametre</a>
-              <ul class="dropdown-menu">
-                <li><a href="/users/create_user">Créer utilisateur</a></li>
-                <li><a href="/users/view_users">Liste utilisateur</a></li>
-              </ul>
-            </li>
-            {% endif %}
-            <li><a href="/logout" id="logout">Logout</a></li>
+          {% if user and user.is_authenticated %}
+          <li><a href="/">Home</a></li>
+          <li class="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#">Contrat</a>
+            <ul class="dropdown-menu">
+              <li><a href="/web-design">Modifier champ</a></li>
+              <li><a href="/seo">Ouvrir Contrat fermé</a></li>
+            </ul>
+          </li>
+          {% if user.role == '2' %}
+          <li class="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#">Parametre</a>
+            <ul class="dropdown-menu">
+              <li><a href="/users/create_user">Créer utilisateur</a></li>
+              <li><a href="/users/view_users">Liste utilisateur</a></li>
+            </ul>
+          </li>
+          {% endif %}
+          <li><a href="/logout" id="logout">Logout</a></li>
           {% else %}
-            <li><a href="/login">Login</a></li>
-   
+          <li><a href="/login">Login</a></li>
           {% endif %}
         </ul>
       </nav>
     </header>
 
-    {% if user.is_authenticated %}
+    {% if user and user.is_authenticated %}
     <p>Welcome, {{ user.name }}!</p>
-    {% endif %}
+    {% endif %} {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div id="flash-messages">
+      {% for category, message in messages %}
+      <div class="{{ 'alert_' + category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %} {% block body %}{% endblock %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-      <div id="flash-messages">
-        {% for category, message in messages %}
-          {% if category == 'error' %}
-          <div class="alert">{{ message }}</div>
-          {% elif category == 'info' %}
-          <div class="alert_info">{{ message }}</div>
-          {% else %}
-          <div class="alert_success">{{ message }}</div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endwith %}
-
-    {% block body %}{% endblock %}
-
-    <script>
-      // Wait for the DOM to load
-      document.addEventListener("DOMContentLoaded", function () {
-        const flashMessages = document.getElementById("flash-messages");
-        if (flashMessages) {
-          setTimeout(() => {
-            flashMessages.style.opacity = 0; 
-            setTimeout(() => flashMessages.remove(), 500); 
-          }, 3000); 
-        }
-      });
-    </script>
+    <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
   </body>
 </html>

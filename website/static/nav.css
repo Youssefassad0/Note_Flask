@@ -172,7 +172,7 @@ nav {
 }
 
 /* Alert Styles */
-.alert {
+.alert_error {
 	background-color: #f44336;
 	color: white;
 	padding: 10px;

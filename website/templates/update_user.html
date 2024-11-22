@@ -1,27 +1,31 @@
-{%extends "base.html"%} {% block title %} Update User {%endblock %} {% block
-style %} {%endblock %} {% block body %}
+{% extends "base.html" %}
+{% block title %} Update User {% endblock %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='users.css') }}">
+{% endblock %}
+{% block body %}
 
 <div class="form-container">
-  <h2>Simple Form</h2>
-  <form action="#" method="post">
-    <label for="input1">Input 1:</label>
-    <input type="text" id="input1" name="input1" required />
+  <h2 class="title_update_user">Modifier Compte</h2>
+  <form method="POST">
+    <label for="input1">Login User:</label>
+    <input type="text" id="input1" name="login" value="{{ user.email }}" required />
 
-    <label for="input2">Input 2:</label>
-    <input type="text" id="input2" name="input2" required />
+    <label for="input2">Nom Complet:</label>
+    <input type="text" id="input2" name="name" value="{{ user.name }}" required />
 
-    <label for="input3">Input 3:</label>
-    <input type="text" id="input3" name="input3" required />
+    <label for="input3">Password:</label>
+    <input type="password" id="input3" name="password" required />
 
-    <label for="select">Select an option:</label>
-    <select id="select" name="select" required>
+    <label for="select">Select the Role:</label>
+    <select id="select" name="role" required>
       <option value="">--Please choose an option--</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
+      <option value="1" {% if user.role == '1' %}selected{% endif %}>utilisateur</option>
+      <option value="2" {% if user.role == '2' %}selected{% endif %}>administrateur</option>
     </select>
 
     <button type="submit">Submit</button>
   </form>
 </div>
+
 {% endblock %}

@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, flash, url_for, redirect
-from .models import User
+from flask import Blueprint, request, flash, redirect, url_for, render_template
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, current_user, logout_user
+from .models import User  # Ensure User is imported from your models
 
 auth = Blueprint("auth", __name__)
 
@@ -14,20 +14,20 @@ def login():
 
         # Check if the user exists in the database
         user = User.query.filter_by(email=email).first()
-        
-        # If user exists and the password is correct
+
         if user and check_password_hash(user.password, password):
             flash("Login successful!", category="success")
-            login_user(user, remember=True)  # Log in the user and remember them for next session
-            return redirect(url_for("views.home"))  # Redirect to home after successful login
+            login_user(user, remember=True)  # Log in the user
+            return redirect(url_for("views.home"))  # Redirect to home
 
-        # If user does not exist or the password is incorrect
-        if not user:
-            flash("Email not found. Please sign up first.", category="error")
-        else:
-            flash("Incorrect password. Please try again.", category="error")
+        # Flash appropriate error messages
+        flash(
+            "Email not found. Please sign up first." if not user else "Incorrect password. Please try again.",
+            category="error",
+        )
     
-    return render_template("login.html", user=current_user)  # Pass current_user to template
+    return render_template("login.html", user=current_user)
+
 
 
 @auth.route("/logout")

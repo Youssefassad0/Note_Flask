@@ -12,7 +12,7 @@ users = Blueprint("users", __name__)
 def create_user():
     print(f"Current user: {current_user} (Role: {getattr(current_user, 'role', None)})")
 
-    if current_user.role != 2:  # Use integer comparison if role is an integer in DB
+    if current_user.role != "2":  # Use integer comparison if role is an integer in DB
         flash(
             "Access denied: You do not have permission to create users.",
             category="error",
@@ -61,7 +61,7 @@ def create_user():
 @users.route("/view_users", methods=["GET", "POST"])
 @login_required
 def view_users():
-    if current_user.role == 2:
+    if current_user.role == "2":
         users_list = User.query.all()  # Get all users
         return render_template(
             "view_users.html", user=current_user, users=users_list
@@ -89,13 +89,43 @@ def delete_user(user_id):
     return redirect(url_for("users.view_users"))
 
 
-@users.route("/update_user/<int:user_id>", methods=["GET","POST"],)
+@users.route("/update_user/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def update_user(user_id):
+    if current_user.role != "2":
+        flash("You do not have permission to update users.", "error")
+        return redirect(url_for("views.home"))
 
-    user_to_delete = User.query.get_or_404(user_id)
-   
-   
-    flash("User Updated successfully!", category="success")
-    return redirect(url_for("users.view_users"))
+    user_to_update = User.query.get_or_404(user_id)
 
+    if request.method == "POST":
+        # Get data from the form
+        login = request.form.get("login")
+        name = request.form.get("name")
+        password = request.form.get("password")
+        role = request.form.get("role")
+
+        # Validate inputs
+        if not login or not name or not password or not role:
+            flash("All fields are required.", "error")
+            return redirect(request.url)
+
+        # Update user fields
+        user_to_update.login = login
+        user_to_update.name = name
+        user_to_update.password = generate_password_hash(
+            password, method="pbkdf2:sha256"
+        )
+        user_to_update.role = role
+
+        # Commit changes to the database
+        try:
+            db.session.commit()
+            flash("User updated successfully!", "success")
+            return redirect(url_for("users.view_users"))  # Redirect to a relevant view
+        except Exception as e:
+            db.session.rollback()
+            flash(f"An error occurred: {str(e)}", "error")
+            return redirect(request.url)
+
+    return render_template("update_user.html", user=user_to_update)
