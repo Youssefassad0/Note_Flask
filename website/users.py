@@ -4,16 +4,19 @@ from werkzeug.security import generate_password_hash
 from . import db
 from .models import User
 
-users = Blueprint('users', __name__)
+users = Blueprint("users", __name__)
 
-@users.route('/create_user', methods=["GET", "POST"])
+
+@users.route("/create_user", methods=["GET", "POST"])
 @login_required
 def create_user():
     print(f"Current user: {current_user} (Role: {getattr(current_user, 'role', None)})")
 
-
     if current_user.role != 2:  # Use integer comparison if role is an integer in DB
-        flash("Access denied: You do not have permission to create users.", category="error")
+        flash(
+            "Access denied: You do not have permission to create users.",
+            category="error",
+        )
         return redirect(url_for("views.home"))
 
     if request.method == "POST":
@@ -27,12 +30,15 @@ def create_user():
             flash("Email must be greater than 4 characters.", category="error")
         elif len(name) <= 2:
             flash("Name must be greater than 2 characters.", category="error")
-        elif len(password) <4:
+        elif len(password) < 4:
             flash("Password must be greater than 6 characters.", category="error")
         elif not role:
             flash("Role must be selected.", category="error")
         elif User.query.filter_by(email=email).first():
-            flash("Email is already in use. Please use a different email.", category="error")
+            flash(
+                "Email is already in use. Please use a different email.",
+                category="error",
+            )
         else:
             # Create a new user
             new_user = User(
@@ -47,21 +53,28 @@ def create_user():
             flash("User created successfully!", category="success")
             return redirect(url_for("users.create_user"))
 
-    return render_template("signup.html", user=current_user)  # Pass current_user to template
+    return render_template(
+        "signup.html", user=current_user
+    )  # Pass current_user to template
 
 
-@users.route('/view_users', methods=["GET", "POST"])
+@users.route("/view_users", methods=["GET", "POST"])
 @login_required
 def view_users():
-    if current_user.role==2:
+    if current_user.role == 2:
         users_list = User.query.all()  # Get all users
-        return render_template("view_users.html", user=current_user, users=users_list)  # Pass both current_user and users
+        return render_template(
+            "view_users.html", user=current_user, users=users_list
+        )  # Pass both current_user and users
     else:
-        flash("Access denied: You do not have permission to delete users.", category="error")
+        flash(
+            "Access denied: You do not have permission to delete users.",
+            category="error",
+        )
         return redirect(url_for("views.home"))
 
 
-@users.route('/delete/<int:user_id>', methods=["GET"])
+@users.route("/delete/<int:user_id>", methods=["GET"])
 @login_required
 def delete_user(user_id):
 
@@ -75,16 +88,14 @@ def delete_user(user_id):
     flash("User deleted successfully!", category="success")
     return redirect(url_for("users.view_users"))
 
-@users.route('/update_user/<int:user_id>', methods=["GET"])
+
+@users.route("/update_user/<int:user_id>", methods=["GET","POST"],)
 @login_required
 def update_user(user_id):
 
     user_to_delete = User.query.get_or_404(user_id)
-    if user_to_delete == current_user:
-        flash("You cannot delete your own account.", category="error")
-        return redirect(url_for("users.view_users"))
-    # Delete the user
-    db.session.delete(user_to_delete)
-    db.session.commit()
-    flash("User deleted successfully!", category="success")
+   
+   
+    flash("User Updated successfully!", category="success")
     return redirect(url_for("users.view_users"))
+

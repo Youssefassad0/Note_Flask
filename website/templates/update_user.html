@@ -1,0 +1,27 @@
+{%extends "base.html"%} {% block title %} Update User {%endblock %} {% block
+style %} {%endblock %} {% block body %}
+
+<div class="form-container">
+  <h2>Simple Form</h2>
+  <form action="#" method="post">
+    <label for="input1">Input 1:</label>
+    <input type="text" id="input1" name="input1" required />
+
+    <label for="input2">Input 2:</label>
+    <input type="text" id="input2" name="input2" required />
+
+    <label for="input3">Input 3:</label>
+    <input type="text" id="input3" name="input3" required />
+
+    <label for="select">Select an option:</label>
+    <select id="select" name="select" required>
+      <option value="">--Please choose an option--</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+{% endblock %}
