@@ -16,7 +16,7 @@ class HistoryLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False) 
     action = db.Column(db.String(50), nullable=False)  
-    details = db.Column(db.String(255), nullable=True) #
+    details = db.Column(db.String(255), nullable=True) 
     timestamp = db.Column(db.DateTime )
 
 class RA(UserMixin, db.Model):

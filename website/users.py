@@ -2,7 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from . import db
-from .models import User
+from .models import User, HistoryLog
 
 users = Blueprint("users", __name__)
 
@@ -120,6 +120,13 @@ def update_user(user_id):
 
         # Commit changes to the database
         try:
+            db.session.commit()
+            log_entry = HistoryLog(
+                user_id=user_to_update.id,
+                action="Updated user",
+                details=f"Update Login to : {login}, name to : {name} role to : {role}",
+            )
+            db.session.add(log_entry)
             db.session.commit()
             flash("User updated successfully!", "success")
             return redirect(url_for("users.view_users"))  # Redirect to a relevant view
