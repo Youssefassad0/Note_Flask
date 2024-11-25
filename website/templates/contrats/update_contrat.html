@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block style %}
+{% extends "base.html" %}
+{% block style %}
 <link
   rel="stylesheet"
   type="text/css"
@@ -10,15 +11,15 @@
     color: {% if contrat.Close_Date %} red {% else %} green {% endif %};
   }
 </style>
-{% endblock %} {% block title %} Modifier Contrat {% endblock %} {% block body
-%}
-<form method="POST" 
-action="{{ url_for('contrats.update_contrat', nm_contrat=contrat.Number) }}"
+{% endblock %}
 
-class="form">
+{% block title %}Modifier Contrat{% endblock %}
+
+{% block body %}
+<form method="POST" action="{{ url_for('contrats.update_contrat', nm_contrat=contrat.Number) }}" class="form">
   <h1>
     Modifier le Contrat
-    <span id="nm_contrat"> {{ contrat.Number or 'N/A' }} </span>
+    <span id="nm_contrat">{{ contrat.Number or 'N/A' }}</span>
   </h1>
 
   <label for="Close_User">Utilisateur de Clôture:</label>
@@ -69,7 +70,11 @@ class="form">
   />
 
   <label>Station d'Entrée :</label>
-  <input type="text" value="{{ contrat.Station_In or '' }}" name="Station_In" />
+  <input
+    type="text"
+    value="{{ contrat.Station_In or '' }}"
+    name="Station_In"
+  />
 
   <label>Station de Retour :</label>
   <input
@@ -78,14 +83,18 @@ class="form">
     name="Return_Station"
   />
 
-  <label> KM D'Entrée :</label>
-  <input type="text" value="{{ contrat_vehicule.Kms_In or '' }}" name="Station_In" />
+  <label>KM d'Entrée :</label>
+  <input
+    type="text"
+    value="{{ contrat_vehicule.Kms_In or '' }}"
+    name="Kms_In"
+  />
 
   <label>KM de Sortie :</label>
   <input
     type="text"
     value="{{ contrat_vehicule.Kms_Out or '' }}"
-    name="Return_Station"
+    name="Kms_Out"
   />
 
   <button type="submit">Confirmer</button>

@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-
+from datetime import datetime
 from . import db
 from .models import RA, RA_Vehicles,HistoryLog
 
@@ -30,38 +30,47 @@ def search_page():
 @contrats.route("/update_contrat/<int:nm_contrat>", methods=["POST"])
 @login_required
 def update_contrat(nm_contrat):
-    # Fetch the contract to be updated
-    contrat = RA.query.filter_by(Number=nm_contrat).first()
-    contrat_vehicule = RA_Vehicles.query.filter_by(RA=nm_contrat).first()
+    try:
+        # Fetch the contract and related vehicle record
+        contrat = RA.query.filter_by(Number=nm_contrat).first()
+        contrat_vehicule = RA_Vehicles.query.filter_by(RA=nm_contrat).first()
 
-    if not contrat:
-        flash("Contract not found.", "error")
-        return redirect(url_for("contrats.search_page"))
+        if not contrat:
+            flash("Contract not found.", "error")
+            return redirect(url_for("contrats.search_page"))
 
-    # Update the contract fields
-    contrat.Close_Date = request.form.get("Close_Date") or contrat.Close_Date
-    contrat.Close_User = request.form.get("Close_User") or contrat.Close_User
-    contrat.Date_Out = request.form.get("Date_Out") or contrat.Date_Out
-    contrat.Date_In = request.form.get("Date_In") or contrat.Date_In
-    contrat.Return_Date = request.form.get("Return_Date") or contrat.Return_Date
-    contrat.Station_Out = request.form.get("Station_Out") or contrat.Station_Out
-    contrat.Station_In = request.form.get("Station_In") or contrat.Station_In
-    contrat.Return_Station = request.form.get("Return_Station") or contrat.Return_Station
-    # Update the contract_vehicles fields
-    contrat_vehicule.Plate_Number= request.form.get("Plate_Number") or contrat.Plate_Number
-    contrat_vehicule.Kms_Out= request.form.get("Kms_Out") or contrat.Kms_Out
-    contrat_vehicule.Kms_In= request.form.get("Kms_In") or contrat.Kms_In
-    # Commit changes to the database
-    db.session.commit()
+        # Update the contract fields (use get and provide fallback values if empty)
+        contrat.Close_Date = datetime.strptime(request.form.get("Close_Date", ""), "%Y-%m-%dT%H:%M") if request.form.get("Close_Date") else contrat.Close_Date
+        contrat.Close_User = request.form.get("Close_User") or contrat.Close_User
+        contrat.Date_Out = datetime.strptime(request.form.get("Date_Out", ""), "%Y-%m-%dT%H:%M") if request.form.get("Date_Out") else contrat.Date_Out
+        contrat.Date_In = datetime.strptime(request.form.get("Date_In", ""), "%Y-%m-%dT%H:%M") if request.form.get("Date_In") else contrat.Date_In
+        contrat.Return_Date = datetime.strptime(request.form.get("Return_Date", ""), "%Y-%m-%dT%H:%M") if request.form.get("Return_Date") else contrat.Return_Date
+        contrat.Station_Out = request.form.get("Station_Out") or contrat.Station_Out
+        contrat.Station_In = request.form.get("Station_In") or contrat.Station_In
+        contrat.Return_Station = request.form.get("Return_Station") or contrat.Return_Station
 
+        # Update the contract_vehicles fields
+        if contrat_vehicule:
+            contrat_vehicule.Plate_Number = request.form.get("Plate_Number") or contrat_vehicule.Plate_Number
+            contrat_vehicule.Kms_Out = request.form.get("Kms_Out") or contrat_vehicule.Kms_Out
+            contrat_vehicule.Kms_In = request.form.get("Kms_In") or contrat_vehicule.Kms_In
 
-    log_entry = HistoryLog(
-        user_id=current_user.id,
-        action="update",
-        details=f"Updated contract numéro: {contrat.Number} "
-    )
-    db.session.add(log_entry)
-    db.session.commit()
+        # Commit changes to the database
+        db.session.commit()
 
-    flash("Modification Avec Succès.", "success")
+        # Log the update
+        log_entry = HistoryLog(
+            user_id=current_user.id,
+            action="update",
+            details=f"Updated contract numéro: {contrat.Number}",
+            timestamp=datetime.now(),
+        )
+        db.session.add(log_entry)
+        db.session.commit()
+
+        flash("Modification avec succès.", "success")
+    except Exception as e:
+        db.session.rollback()  # Roll back in case of any failure
+        flash(f"Error updating contract: {str(e)}", "error")
+
     return redirect(url_for("contrats.search_page"))
