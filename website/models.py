@@ -4,20 +4,22 @@ from flask_login import UserMixin
 
 
 class User(UserMixin, db.Model):
-    __tablename__ = 'User_note'
+    __tablename__ = "User_note"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
     name = db.Column(db.String(150), nullable=False)
     password = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(50), nullable=False)
 
-class HistoryLog(UserMixin,db.Model):
-    __tablename__ = 'HistoryLog'
+
+class HistoryLog(UserMixin, db.Model):
+    __tablename__ = "HistoryLog"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)  # The user performing the action
-    action = db.Column(db.String(50), nullable=False)  
-    details = db.Column(db.String(255), nullable=True)  
-    timestamp = db.Column(db.DateTime )
+    action = db.Column(db.String(50), nullable=False)
+    details = db.Column(db.String(255), nullable=True)
+    timestamp = db.Column(db.DateTime)
+
 
 class RA(UserMixin, db.Model):
     __tablename__ = "RA"
@@ -33,15 +35,15 @@ class RA(UserMixin, db.Model):
     Return_Place = db.Column(db.String(50))
     Return_Date = db.Column(db.Date)
 
-class RA_Vehicles(UserMixin,db.Model):
+
+class RA_Vehicles(UserMixin, db.Model):
     __tablename__ = "RA_Vehicles"
-    RA = db.Column(db.String(20), primary_key=True)  
+    RA = db.Column(db.String(20), primary_key=True)
     Unit_Number = db.Column(db.String(50))
     Plate_Number = db.Column(db.String(50))
     Station_out = db.Column(db.String(50))
     Data_Out = db.Column(db.DateTime)
     Station_In = db.Column(db.String(50))
     Data_In = db.Column(db.DateTime)
-    Kms_Out=db.Column(db.String(50))
-    Kms_In=db.Column(db.String(50))
-
+    Kms_Out = db.Column(db.String(50))
+    Kms_In = db.Column(db.String(50))
