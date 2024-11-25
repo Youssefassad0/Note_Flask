@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,8 +10,11 @@
       href="{{ url_for('static', filename='nav.css') }}"
     />
     {% block style %}{% endblock %}
-    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
-
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+      type="image/png"
+    />
   </head>
   <body>
     <header>
@@ -25,40 +28,45 @@
         </label>
         <ul class="nav-links">
           {% if user and user.is_authenticated %}
-          <li><a href="/">Home</a></li>
+          <li><a href="/">Accueil</a></li>
           <li class="dropdown" aria-haspopup="true" aria-expanded="false">
-            <a href="#">Contrat</a>
+            <a href="#">Opérations</a>
             <ul class="dropdown-menu">
-              <li><a href="/contrats/search_contrat">Modifier champ</a></li>
-              <li><a href="/contrats/search_contrat">Ouvrir Contrat fermé</a></li>
+              <li><a href="/contrats/search_contrat">Contrats</a></li>
+              <li><a href="/contrats/search_contrat">Impros</a></li>
+              <li><a href="/contrats/search_contrat">Caisses</a></li>
+              <li><a href="/contrats/search_contrat">Factures</a></li>
             </ul>
           </li>
           {% if user.role == '2' %}
           <li class="dropdown" aria-haspopup="true" aria-expanded="false">
-            <a href="#">Parametre</a>
+            <a href="#">Paramètres</a>
             <ul class="dropdown-menu">
-              <li><a href="/users/create_user">Créer utilisateur</a></li>
-              <li><a href="/users/view_users">Liste utilisateur</a></li>
-              <li><a href="/users/history">Liste d'historique</a></li>
+              <li><a href="/users/create_user">Créer un utilisateur</a></li>
+              <li><a href="/users/view_users">Liste des utilisateurs</a></li>
+              <li><a href="/users/history">Historique</a></li>
             </ul>
           </li>
           {% endif %}
-          <li><a href="/logout" id="logout">Logout</a></li>
+          <li><a href="/logout" id="logout">Déconnexion</a></li>
           {% else %}
-          <li><a href="/login">Login</a></li>
+          <li><a href="/login">Connexion</a></li>
           {% endif %}
         </ul>
       </nav>
     </header>
 
-    {% if user and user.is_authenticated %} {% endif %} {% with messages =
-    get_flashed_messages(with_categories=true) %} {% if messages %}
+    {% if user and user.is_authenticated %} {% endif %} 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
     <div id="flash-messages">
       {% for category, message in messages %}
       <div class="{{ 'alert_' + category }}">{{ message }}</div>
       {% endfor %}
     </div>
-    {% endif %} {% endwith %} {% block body %}{% endblock %}
+    {% endif %}
+    {% endwith %}
+    {% block body %}{% endblock %}
 
     <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
   </body>

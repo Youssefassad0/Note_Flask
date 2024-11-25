@@ -114,7 +114,7 @@ def update_action(nm_contrat):
         log_entry = HistoryLog(
             user_id=current_user.id,
             action="Open Contract",
-            details=f"Opened contract numéro: {contrat.Number}",
+            details=f"{current_user.login}  Opened contract numéro: {contrat.Number}",
             timestamp=datetime.now()
         )
         db.session.add(log_entry)
@@ -126,18 +126,20 @@ def update_action(nm_contrat):
         log_entry = HistoryLog(
             user_id=current_user.id,
             action="Close Contract",
-            details=f"Closed contract numéro: {contrat.Number}",
+            details=f"{current_user.login} Closed contract numéro: {contrat.Number}",
             timestamp=datetime.now()
         )
         db.session.add(log_entry)
         flash(f"Contrat {contrat.Number} fermé avec succès.", "success")
 
     elif action == "cancel":
-        contrat.Status = "Cancelled"
+        contrat.Deleted = 1
+        contrat.Deleted_date=datetime.now()
+        contrat.Deleted_User=current_user.login
         log_entry = HistoryLog(
             user_id=current_user.id,
             action="Cancel Contract",
-            details=f"Cancelled contract numéro: {contrat.Number}",
+            details=f" {current_user.login} Cancelled contract numéro: {contrat.Number}",
             timestamp=datetime.now()
         )
         db.session.add(log_entry)

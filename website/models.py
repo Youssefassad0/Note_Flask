@@ -34,6 +34,9 @@ class RA(UserMixin, db.Model):
     Return_Station = db.Column(db.String(50))
     Return_Place = db.Column(db.String(50))
     Return_Date = db.Column(db.Date)
+    Deleted=db.Column(db.Boolean)
+    Deleted_date=db.Column(db.DateTime)
+    Deleted_User=db.Column(db.String(50))
 
 
 class RA_Vehicles(UserMixin, db.Model):
