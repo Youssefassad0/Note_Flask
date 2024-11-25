@@ -55,13 +55,12 @@ def update_contrat(nm_contrat):
             contrat_vehicule.Kms_Out = request.form.get("Kms_Out") or contrat_vehicule.Kms_Out
             contrat_vehicule.Kms_In = request.form.get("Kms_In") or contrat_vehicule.Kms_In
 
-        # Commit changes to the database
+ 
         db.session.commit()
 
-        # Log the update
         log_entry = HistoryLog(
             user_id=current_user.id,
-            action="update",
+            action="update Contrat",
             details=f"Updated contract numéro: {contrat.Number}",
             timestamp=datetime.now(),
         )
@@ -70,7 +69,7 @@ def update_contrat(nm_contrat):
 
         flash("Modification avec succès.", "success")
     except Exception as e:
-        db.session.rollback()  # Roll back in case of any failure
+        db.session.rollback()
         flash(f"Error updating contract: {str(e)}", "error")
 
     return redirect(url_for("contrats.search_page"))

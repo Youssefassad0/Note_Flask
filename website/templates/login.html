@@ -2,12 +2,17 @@
 style %} <link rel=stylesheet type=text/css href="{{ url_for('static',
 filename='login.css') }}"> {%endblock %} {% block body %}
 <div class="container">
+  <div class="logo2">
+    <img
+      src="{{ url_for('static', filename='images/logo.png') }}"
+      alt="Rentway Logo"
+      class="logo__image"
+    />
+  </div>
   <div class="screen">
-   
     <div class="screen__content">
-        Logo 
-      <form class="login"  method="POST">
-  
+      
+      <form class="login" method="POST">
         <div class="login__field">
           <i class="login__icon fas fa-user"></i>
           <input
