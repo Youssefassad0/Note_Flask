@@ -2,7 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from datetime import datetime
 from . import db
-from .models import RA, RA_Vehicles,HistoryLog
+from .models import RA, RA_Vehicles, HistoryLog
 
 contrats = Blueprint("contrats", __name__)
 
@@ -27,6 +27,8 @@ def search_page():
             return redirect(url_for("contrats.search_page"))
 
     return render_template("contrats/search.html", user=current_user)
+
+
 @contrats.route("/update_contrat/<int:nm_contrat>", methods=["POST"])
 @login_required
 def update_contrat(nm_contrat):
@@ -40,20 +42,44 @@ def update_contrat(nm_contrat):
             return redirect(url_for("contrats.search_page"))
 
         # Update the contract fields (use get and provide fallback values if empty)
-        contrat.Close_Date = datetime.strptime(request.form.get("Close_Date", ""), "%Y-%m-%dT%H:%M") if request.form.get("Close_Date") else contrat.Close_Date
+        contrat.Close_Date = (
+            datetime.strptime(request.form.get("Close_Date", ""), "%Y-%m-%dT%H:%M")
+            if request.form.get("Close_Date")
+            else contrat.Close_Date
+        )
         contrat.Close_User = request.form.get("Close_User") or contrat.Close_User
-        contrat.Date_Out = datetime.strptime(request.form.get("Date_Out", ""), "%Y-%m-%dT%H:%M") if request.form.get("Date_Out") else contrat.Date_Out
-        contrat.Date_In = datetime.strptime(request.form.get("Date_In", ""), "%Y-%m-%dT%H:%M") if request.form.get("Date_In") else contrat.Date_In
-        contrat.Return_Date = datetime.strptime(request.form.get("Return_Date", ""), "%Y-%m-%dT%H:%M") if request.form.get("Return_Date") else contrat.Return_Date
+        contrat.Date_Out = (
+            datetime.strptime(request.form.get("Date_Out", ""), "%Y-%m-%dT%H:%M")
+            if request.form.get("Date_Out")
+            else contrat.Date_Out
+        )
+        contrat.Date_In = (
+            datetime.strptime(request.form.get("Date_In", ""), "%Y-%m-%dT%H:%M")
+            if request.form.get("Date_In")
+            else contrat.Date_In
+        )
+        contrat.Return_Date = (
+            datetime.strptime(request.form.get("Return_Date", ""), "%Y-%m-%dT%H:%M")
+            if request.form.get("Return_Date")
+            else contrat.Return_Date
+        )
         contrat.Station_Out = request.form.get("Station_Out") or contrat.Station_Out
         contrat.Station_In = request.form.get("Station_In") or contrat.Station_In
-        contrat.Return_Station = request.form.get("Return_Station") or contrat.Return_Station
+        contrat.Return_Station = (
+            request.form.get("Return_Station") or contrat.Return_Station
+        )
 
         # Update the contract_vehicles fields
         if contrat_vehicule:
-            contrat_vehicule.Plate_Number = request.form.get("Plate_Number") or contrat_vehicule.Plate_Number
-            contrat_vehicule.Kms_Out = request.form.get("Kms_Out") or contrat_vehicule.Kms_Out
-            contrat_vehicule.Kms_In = request.form.get("Kms_In") or contrat_vehicule.Kms_In 
+            contrat_vehicule.Plate_Number = (
+                request.form.get("Plate_Number") or contrat_vehicule.Plate_Number
+            )
+            contrat_vehicule.Kms_Out = (
+                request.form.get("Kms_Out") or contrat_vehicule.Kms_Out
+            )
+            contrat_vehicule.Kms_In = (
+                request.form.get("Kms_In") or contrat_vehicule.Kms_In
+            )
         db.session.commit()
 
         log_entry = HistoryLog(
