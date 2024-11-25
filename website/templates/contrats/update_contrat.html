@@ -1,22 +1,23 @@
-{% extends "base.html" %}
-{% block style %}
+{% extends "base.html" %} {% block style %}
 <link
   rel="stylesheet"
   type="text/css"
   href="{{ url_for('static', filename='contrats.css') }}"
 />
 <style>
-  #nm_contrat {
-    font-size: 1rem;
-    color: {% if contrat.Close_Date %} red {% else %} green {% endif %};
-  }
+    #nm_contrat {
+      font-size: 1rem;
+      color: {% if contrat.Close_Date %} red {% else %} green {% endif %};
+    }
+
+   
 </style>
-{% endblock %}
-
-{% block title %}Modifier Contrat{% endblock %}
-
-{% block body %}
-<form method="POST" action="{{ url_for('contrats.update_contrat', nm_contrat=contrat.Number) }}" class="form">
+{% endblock %} {% block title %}Modifier Contrat{% endblock %} {% block body %}
+<form
+  method="POST"
+  action="{{ url_for('contrats.update_contrat', nm_contrat=contrat.Number) }}"
+  class="form"
+>
   <h1>
     Modifier le Contrat
     <span id="nm_contrat">{{ contrat.Number or 'N/A' }}</span>
@@ -70,11 +71,7 @@
   />
 
   <label>Station d'Entrée :</label>
-  <input
-    type="text"
-    value="{{ contrat.Station_In or '' }}"
-    name="Station_In"
-  />
+  <input type="text" value="{{ contrat.Station_In or '' }}" name="Station_In" />
 
   <label>Station de Retour :</label>
   <input
@@ -104,5 +101,20 @@
   >
     Annuler
   </button>
+</form>
+
+<!-- Additional Form for Actions -->
+<form method="POST" class="form_buttons" action="" >
+  <div class="action-buttons">
+    <button type="submit" name="action" value="open" class="btn-open">
+      Ouvrir Contrat
+    </button>
+    <button type="submit" name="action" value="close" class="btn-close">
+      Fermer Contrat
+    </button>
+    <button type="submit" name="action" value="cancel" class="btn-cancel">
+      Annuler Contrat
+    </button>
+  </div>
 </form>
 {% endblock %}
