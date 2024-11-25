@@ -53,9 +53,7 @@ def update_contrat(nm_contrat):
         if contrat_vehicule:
             contrat_vehicule.Plate_Number = request.form.get("Plate_Number") or contrat_vehicule.Plate_Number
             contrat_vehicule.Kms_Out = request.form.get("Kms_Out") or contrat_vehicule.Kms_Out
-            contrat_vehicule.Kms_In = request.form.get("Kms_In") or contrat_vehicule.Kms_In
-
- 
+            contrat_vehicule.Kms_In = request.form.get("Kms_In") or contrat_vehicule.Kms_In 
         db.session.commit()
 
         log_entry = HistoryLog(
