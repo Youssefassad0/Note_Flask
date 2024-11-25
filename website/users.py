@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from . import db
 from .models import User, HistoryLog
+from datetime import datetime
 
 users = Blueprint("users", __name__)
 
@@ -84,9 +85,22 @@ def delete_user(user_id):
         return redirect(url_for("users.view_users"))
     # Delete the user
     db.session.delete(user_to_delete)
-    db.session.commit()
-    flash("User deleted successfully!", category="success")
-    return redirect(url_for("users.view_users"))
+    try:
+        db.session.commit()
+        log_entry = HistoryLog(
+            user_id=current_user.id,
+            action="Delete user",
+            details=f"Update Login to : {user_to_delete.login}  , name to : {user_to_delete.name} role to : {user_to_delete.role}",
+            timestamp=datetime.now(),
+        )
+        db.session.add(log_entry)
+        db.session.commit()
+        flash("User deleted successfully!", category="success")
+        return redirect(url_for("users.view_users"))
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred: {str(e)}", "error")
+        return redirect(request.url)
 
 
 @users.route("/update_user/<int:user_id>", methods=["GET", "POST"])
@@ -122,9 +136,10 @@ def update_user(user_id):
         try:
             db.session.commit()
             log_entry = HistoryLog(
-                user_id=user_to_update.id,
+                user_id=current_user.id,
                 action="Updated user",
                 details=f"Update Login to : {login}, name to : {name} role to : {role}",
+                timestamp=datetime.now(),
             )
             db.session.add(log_entry)
             db.session.commit()
@@ -136,3 +151,5 @@ def update_user(user_id):
             return redirect(request.url)
 
     return render_template("update_user.html", user=user_to_update)
+
+
