@@ -11,6 +11,14 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(50), nullable=False)
 
+class HistoryLog(db.Model):
+    __tablename__ = 'HistoryLog'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False) 
+    action = db.Column(db.String(50), nullable=False)  
+    details = db.Column(db.String(255), nullable=True) #
+    timestamp = db.Column(db.DateTime )
+
 class RA(UserMixin, db.Model):
     __tablename__ = "RA"
     Number = db.Column(db.String(20), primary_key=True)
