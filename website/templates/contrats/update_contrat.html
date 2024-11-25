@@ -104,7 +104,8 @@
 </form>
 
 <!-- Additional Form for Actions -->
-<form method="POST" class="form_buttons" action="" >
+<form method="POST" class="form_buttons"
+action="{{ url_for('contrats.update_action', nm_contrat=contrat.Number) }}" >
   <div class="action-buttons">
     <button type="submit" name="action" value="open" class="btn-open">
       Ouvrir Contrat
