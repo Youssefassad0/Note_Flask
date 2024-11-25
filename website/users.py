@@ -144,7 +144,7 @@ def update_user(user_id):
             db.session.add(log_entry)
             db.session.commit()
             flash("User updated successfully!", "success")
-            return redirect(url_for("users.view_users"))  # Redirect to a relevant view
+            return redirect(url_for("users.view_users")) 
         except Exception as e:
             db.session.rollback()
             flash(f"An error occurred: {str(e)}", "error")
@@ -152,4 +152,12 @@ def update_user(user_id):
 
     return render_template("update_user.html", user=user_to_update)
 
+@users.route("/history")
+@login_required
+def history():
+    if current_user.role != "admin":
+        flash("You do not have permission to view the history.", "error")
+        return redirect(url_for("views.home"))
 
+    history_logs = HistoryLog.query.order_by(HistoryLog.timestamp.desc()).all()
+    return render_template("history.html", history_logs=history_logs)
