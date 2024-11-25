@@ -155,7 +155,7 @@ def update_user(user_id):
 @users.route("/history")
 @login_required
 def history():
-    if current_user.role != "admin":
+    if current_user.role != "2":
         flash("You do not have permission to view the history.", "error")
         return redirect(url_for("views.home"))
 
