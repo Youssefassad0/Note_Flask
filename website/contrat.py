@@ -97,3 +97,51 @@ def update_contrat(nm_contrat):
         flash(f"Error updating contract: {str(e)}", "error")
 
     return redirect(url_for("contrats.search_page"))
+
+@contrats.route("/update_action/<int:nm_contrat>", methods=["POST"])
+@login_required
+def update_action(nm_contrat):
+    action = request.form.get("action")
+    contrat = RA.query.filter_by(Number=nm_contrat).first()
+
+    if not contrat:
+        flash("Contrat introuvable.", "error")
+        return redirect(url_for("contrats.search_page"))
+
+    if action == "open":
+        contrat.Close_Date = None
+        contrat.Close_User = None
+        log_entry = HistoryLog(
+            user_id=current_user.id,
+            action="Open Contract",
+            details=f"Opened contract numéro: {contrat.Number}",
+            timestamp=datetime.now()
+        )
+        db.session.add(log_entry)
+        flash(f"Contrat {contrat.Number} ouvert avec succès.", "success")
+
+    elif action == "close":
+        contrat.Close_Date = datetime.now()
+        contrat.Close_User = current_user.login
+        log_entry = HistoryLog(
+            user_id=current_user.id,
+            action="Close Contract",
+            details=f"Closed contract numéro: {contrat.Number}",
+            timestamp=datetime.now()
+        )
+        db.session.add(log_entry)
+        flash(f"Contrat {contrat.Number} fermé avec succès.", "success")
+
+    elif action == "cancel":
+        contrat.Status = "Cancelled"
+        log_entry = HistoryLog(
+            user_id=current_user.id,
+            action="Cancel Contract",
+            details=f"Cancelled contract numéro: {contrat.Number}",
+            timestamp=datetime.now()
+        )
+        db.session.add(log_entry)
+        flash(f"Contrat {contrat.Number} annulé avec succès.", "success")
+
+    db.session.commit()
+    return redirect(url_for("contrats.search_page"))
