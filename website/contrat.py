@@ -58,7 +58,7 @@ def update_contrat(nm_contrat):
     log_entry = HistoryLog(
         user_id=current_user.id,
         action="update",
-        details="Updated contract fields."
+        details=f"Updated contract numéro: {contrat.Number} "
     )
     db.session.add(log_entry)
     db.session.commit()
