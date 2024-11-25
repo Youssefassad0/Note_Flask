@@ -30,46 +30,38 @@ def search_page():
 @contrats.route("/update_contrat/<int:nm_contrat>", methods=["POST"])
 @login_required
 def update_contrat(nm_contrat):
-    # Fetch the contract and vehicle details
+    # Fetch the contract to be updated
     contrat = RA.query.filter_by(Number=nm_contrat).first()
     contrat_vehicule = RA_Vehicles.query.filter_by(RA=nm_contrat).first()
 
-    if not contrat or not contrat_vehicule:
-        flash("Contrat not found.", "error")
+    if not contrat:
+        flash("Contract not found.", "error")
         return redirect(url_for("contrats.search_page"))
 
-    # Capture the changes made
-    changes = {}
-
-    # Update contract fields and log changes
-    for field in ["Close_Date", "Close_User", "Date_Out", "Date_In", "Return_Date", "Station_Out", "Station_In", "Return_Station", "Return_Place"]:
-        old_value = getattr(contrat, field, None)
-        new_value = request.form.get(field, None)
-        if new_value and str(old_value) != new_value:
-            changes[field] = {"old": old_value, "new": new_value}
-            setattr(contrat, field, new_value)
-
-    # Update vehicle fields and log changes
-    for field in ["Plate_Number", "Kms_Out", "Kms_In"]:
-        old_value = getattr(contrat_vehicule, field, None)
-        new_value = request.form.get(field, None)
-        if new_value and str(old_value) != new_value:
-            changes[field] = {"old": old_value, "new": new_value}
-            setattr(contrat_vehicule, field, new_value)
-
-    # Commit the changes to the database
+    # Update the contract fields
+    contrat.Close_Date = request.form.get("Close_Date") or contrat.Close_Date
+    contrat.Close_User = request.form.get("Close_User") or contrat.Close_User
+    contrat.Date_Out = request.form.get("Date_Out") or contrat.Date_Out
+    contrat.Date_In = request.form.get("Date_In") or contrat.Date_In
+    contrat.Return_Date = request.form.get("Return_Date") or contrat.Return_Date
+    contrat.Station_Out = request.form.get("Station_Out") or contrat.Station_Out
+    contrat.Station_In = request.form.get("Station_In") or contrat.Station_In
+    contrat.Return_Station = request.form.get("Return_Station") or contrat.Return_Station
+    # Update the contract_vehicles fields
+    contrat_vehicule.Plate_Number= request.form.get("Plate_Number") or contrat.Plate_Number
+    contrat_vehicule.Kms_Out= request.form.get("Kms_Out") or contrat.Kms_Out
+    contrat_vehicule.Kms_In= request.form.get("Kms_In") or contrat.Kms_In
+    # Commit changes to the database
     db.session.commit()
 
-    # Log the changes in the HistoryLog table
-    if changes:
-        log_entry = HistoryLog(
-            user_id=current_user.id,  # Assuming Flask-Login is being used
-            action="update",
-            target_contrat_id=contrat.Number,
-            details=json.dumps(changes)  # Store changes as a JSON string
-        )
-        db.session.add(log_entry)
-        db.session.commit()
+
+    log_entry = HistoryLog(
+        user_id=current_user.id,
+        action="update",
+        details="Updated contract fields."
+    )
+    db.session.add(log_entry)
+    db.session.commit()
 
     flash("Modification Avec Succès.", "success")
     return redirect(url_for("contrats.search_page"))
