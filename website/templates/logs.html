@@ -3,8 +3,8 @@
  <link rel=stylesheet type=text/css
  href="{{ url_for('static', filename='users.css') }}"> 
 {%endblock %} {% block
-title %} Users Page {%endblock %} {% block body %}
-<h1>Users</h1>
+title %} Logs Page {%endblock %} {% block body %}
+<h1>Historique</h1>
 <div class="table-horizontal-container">
   <table class="unfixed-table">
     <thead>
@@ -23,7 +23,6 @@ title %} Users Page {%endblock %} {% block body %}
     <td>{{ log.id }}</td>
     <td>{{ log.user_id }}</td>
     <td>{{ log.action }}</td>
-    <td>{{ log.target_user_id }}</td>
     <td>{{ log.details }}</td>
     <td>{{ log.timestamp }}</td>
 </tr>

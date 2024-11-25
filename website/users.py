@@ -155,9 +155,7 @@ def update_user(user_id):
 @users.route("/history")
 @login_required
 def history():
-    if current_user.role != "2":
-        flash("You do not have permission to view the history.", "error")
-        return redirect(url_for("views.home"))
+    logs = db.session.query(HistoryLog, User).join(User, HistoryLog.user_id == User.id).all()
 
-    history_logs = HistoryLog.query.order_by(HistoryLog.timestamp.desc()).all()
-    return render_template("history.html", history_logs=history_logs)
+    for log, user in logs:
+        print(f"{log.action} performed by {user.name} at {log.timestamp}")
